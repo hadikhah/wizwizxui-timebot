@@ -1826,8 +1826,14 @@ if($botState['subLinkState'] == "on") $acc_text .= "
         $order = $stmt->get_result(); 
         $stmt->close();
     }
-    
-    if($userInfo['refered_by'] != null){
+
+    $stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
+    $stmt->bind_param("i", $uid);
+    $stmt->execute();
+    $orderHistory = $stmt->get_result()->num_rows;
+    $stmt->close();
+
+    if($userInfo['refered_by'] != null && $orderHistory <= 1){
         $stmt = $connection->prepare("SELECT * FROM `setting` WHERE `type` = 'INVITE_BANNER_AMOUNT'");
         $stmt->execute();
         $inviteAmount = $stmt->get_result()->fetch_assoc()['value']??0;
