@@ -1697,7 +1697,7 @@ if(preg_match('/havePaiedWeSwap(.*)/',$data,$match)) {
     define('IMAGE_WIDTH',540);
     define('IMAGE_HEIGHT',540);
 
-	$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet')");
+	$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') AND `type` != 'INCREASE_WALLET'");
     $stmt->bind_param("i", $uid);
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
@@ -3077,7 +3077,7 @@ if($botState['subLinkState'] == "on") $acc_text .= "
         unlink($file);
     }
 
-    $stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet')");
+    $stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') AND `type` != 'INCREASE_WALLET'");
     $stmt->bind_param("i", $uid);
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
@@ -3312,7 +3312,16 @@ if(preg_match('/accCustom(.*)/',$data, $match) and $text != $buttonValues['cance
     $stmt->execute();
     $payInfo = $stmt->get_result()->fetch_assoc();
     $stmt->close();
-    
+
+	$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') AND `type` != 'INCREASE_WALLET'");
+    $stmt->bind_param("i", $uid);
+    $stmt->execute();
+    $orderHistory = $stmt->get_result()->num_rows;
+	    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
+";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
+		
+    $stmt->close();
+	
     if($payInfo['state'] == "approved") exit();
 
     $stmt = $connection->prepare("UPDATE `pays` SET `state` = 'approved' WHERE `hash_id` = ?");
@@ -3495,15 +3504,6 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     sendMessage('✅ کانفیگ و براش ارسال کردم', getMainKeys());
     
     $agentBought = $payInfo['agent_bought'];
-
-	$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet')");
-    $stmt->bind_param("i", $uid);
-    $stmt->execute();
-    $orderHistory = $stmt->get_result()->num_rows;
-	    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
-";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
-		
-    $stmt->close();
 	
 	$stmt = $connection->prepare("INSERT INTO `orders_list` 
 	    (`userid`, `token`, `transid`, `fileid`, `server_id`, `inbound_id`, `remark`, `uuid`, `protocol`, `expire_date`, `link`, `amount`, `status`, `date`, `notif`, `rahgozar`, `agent_bought`)
@@ -3711,7 +3711,7 @@ if(preg_match('/payWithWallet(.*)/',$data, $match)){
         define('IMAGE_WIDTH',540);
         define('IMAGE_HEIGHT',540);
 
-		$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet')");
+		$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') AND `type` != 'INCREASE_WALLET'");
         $stmt->bind_param("i", $uid);
         $stmt->execute();
         $orderHistory = $stmt->get_result()->num_rows;
@@ -4254,7 +4254,7 @@ if(preg_match('/accept(.*)/',$data, $match) and $text != $buttonValues['cancel']
         define('IMAGE_WIDTH',540);
         define('IMAGE_HEIGHT',540);
 
-		$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet')");
+		$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') AND `type` != 'INCREASE_WALLET'");
         $stmt->bind_param("i", $uid);
         $stmt->execute();
         $orderHistory = $stmt->get_result()->num_rows;
