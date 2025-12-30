@@ -4427,6 +4427,17 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     $keys = json_encode(['inline_keyboard'=>array_values($markup)],488);
 
     editKeys($keys);
+
+	$logFile = "logs/referral_logs.txt"; 
+    $currentLine = __LINE__;
+    $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Pay info type: $payInfo['type']\n";
+    file_put_contents($logFile, $logMsg, FILE_APPEND);
+
+    $currentLine = __LINE__;
+    $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Pay info type: $userInfo['refered_by'] , history: $orderHistory\n";
+    file_put_contents($logFile, $logMsg, FILE_APPEND);
+
+	
     if($payInfo['type'] != "RENEW_SCONFIG"){
         $filename = $file_detail['title'];
         $fileprice = number_format($file_detail['price']);
