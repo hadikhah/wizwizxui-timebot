@@ -1697,12 +1697,13 @@ if(preg_match('/havePaiedWeSwap(.*)/',$data,$match)) {
     define('IMAGE_WIDTH',540);
     define('IMAGE_HEIGHT',540);
 
-	$stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
+	$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet')");
     $stmt->bind_param("i", $uid);
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
-	sendMessage("$orderHistory to admin" , null , null , $admin);
-	sendMessage("hello to admin" , null , null , $admin);
+	    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
+";     file_put_contents("referral_logs.txt", $logMsg, FILE_APPEND);
+	
     $stmt->close();
 		
     for($i = 1; $i <= $accountCount; $i++){
@@ -3076,12 +3077,13 @@ if($botState['subLinkState'] == "on") $acc_text .= "
         unlink($file);
     }
 
-    $stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
+    $stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet')");
     $stmt->bind_param("i", $uid);
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
-	sendMessage("$orderHistory to admin" , null , null , $admin);
-		sendMessage("hello to admin" , null , null , $admin);
+	    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
+";     file_put_contents("referral_logs.txt", $logMsg, FILE_APPEND);
+	
     $stmt->close();
 
     if($user_detail['refered_by'] != null && $orderHistory <= 1){
@@ -3494,12 +3496,13 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     
     $agentBought = $payInfo['agent_bought'];
 
-	$stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
+	$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet')");
     $stmt->bind_param("i", $uid);
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
-	sendMessage("$orderHistory to admin" , null , null , $admin);
-		sendMessage("hello to admin" , null , null , $admin);
+	    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
+";     file_put_contents("referral_logs.txt", $logMsg, FILE_APPEND);
+		
     $stmt->close();
 	
 	$stmt = $connection->prepare("INSERT INTO `orders_list` 
@@ -3708,12 +3711,13 @@ if(preg_match('/payWithWallet(.*)/',$data, $match)){
         define('IMAGE_WIDTH',540);
         define('IMAGE_HEIGHT',540);
 
-		$stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
+		$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet')");
         $stmt->bind_param("i", $uid);
         $stmt->execute();
         $orderHistory = $stmt->get_result()->num_rows;
-		sendMessage("$orderHistory to admin" , null , null , $admin);
-		sendMessage("hello to admin" , null , null , $admin);
+    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
+";     file_put_contents("referral_logs.txt", $logMsg, FILE_APPEND);
+		
         $stmt->close();
 
         for($i = 1; $i <= $accountCount; $i++){
@@ -4250,12 +4254,13 @@ if(preg_match('/accept(.*)/',$data, $match) and $text != $buttonValues['cancel']
         define('IMAGE_WIDTH',540);
         define('IMAGE_HEIGHT',540);
 
-		$stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
+		$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet')");
         $stmt->bind_param("i", $uid);
         $stmt->execute();
         $orderHistory = $stmt->get_result()->num_rows;
-		sendMessage("$orderHistory to admin" , null , null , $admin);
-		sendMessage("hello to admin" , null , null , $admin);
+    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
+";     file_put_contents("referral_logs.txt", $logMsg, FILE_APPEND);
+		
         $stmt->close();
 		
         for($i = 1; $i <= $accountCount; $i++){
@@ -8451,7 +8456,7 @@ if(preg_match('/switchServer(.+)_(.+)/',$data,$match)){
     $server_title = $stmt->get_result()->fetch_assoc()['title'];
     $stmt->close();
     
-    $stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1 ORDER BY `id` DESC");
+    $stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') ORDER BY `id` DESC");
     $stmt->bind_param("i", $from_id);
     $stmt->execute();
     $orders = $stmt->get_result();
