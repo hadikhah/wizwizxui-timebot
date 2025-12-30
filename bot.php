@@ -1702,7 +1702,7 @@ if(preg_match('/havePaiedWeSwap(.*)/',$data,$match)) {
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
 	    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
-";     file_put_contents("referral_logs.txt", $logMsg, FILE_APPEND);
+";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
 	
     $stmt->close();
 		
@@ -3082,7 +3082,7 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
 	    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
-";     file_put_contents("referral_logs.txt", $logMsg, FILE_APPEND);
+";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
 	
     $stmt->close();
 
@@ -3501,7 +3501,7 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
 	    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
-";     file_put_contents("referral_logs.txt", $logMsg, FILE_APPEND);
+";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
 		
     $stmt->close();
 	
@@ -3716,7 +3716,7 @@ if(preg_match('/payWithWallet(.*)/',$data, $match)){
         $stmt->execute();
         $orderHistory = $stmt->get_result()->num_rows;
     $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
-";     file_put_contents("referral_logs.txt", $logMsg, FILE_APPEND);
+";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
 		
         $stmt->close();
 
@@ -4259,7 +4259,7 @@ if(preg_match('/accept(.*)/',$data, $match) and $text != $buttonValues['cancel']
         $stmt->execute();
         $orderHistory = $stmt->get_result()->num_rows;
     $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
-";     file_put_contents("referral_logs.txt", $logMsg, FILE_APPEND);
+";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
 		
         $stmt->close();
 		
