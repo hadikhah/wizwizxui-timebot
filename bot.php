@@ -1696,6 +1696,13 @@ if(preg_match('/havePaiedWeSwap(.*)/',$data,$match)) {
     alert($mainValues['sending_config_to_user']);
     define('IMAGE_WIDTH',540);
     define('IMAGE_HEIGHT',540);
+
+	$stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
+    $stmt->bind_param("i", $uid);
+    $stmt->execute();
+    $orderHistory = $stmt->get_result()->num_rows;
+    $stmt->close();
+		
     for($i = 1; $i <= $accountCount; $i++){
         $uniqid = generateRandomString(42,$protocol);
         
@@ -1826,12 +1833,6 @@ if($botState['subLinkState'] == "on") $acc_text .= "
         $order = $stmt->get_result(); 
         $stmt->close();
     }
-
-    $stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
-    $stmt->bind_param("i", $uid);
-    $stmt->execute();
-    $orderHistory = $stmt->get_result()->num_rows;
-    $stmt->close();
 
     if($userInfo['refered_by'] != null && $orderHistory <= 1){
         $stmt = $connection->prepare("SELECT * FROM `setting` WHERE `type` = 'INVITE_BANNER_AMOUNT'");
@@ -3488,6 +3489,13 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     sendMessage('✅ کانفیگ و براش ارسال کردم', getMainKeys());
     
     $agentBought = $payInfo['agent_bought'];
+
+	$stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
+    $stmt->bind_param("i", $uid);
+    $stmt->execute();
+    $orderHistory = $stmt->get_result()->num_rows;
+    $stmt->close();
+	
 	$stmt = $connection->prepare("INSERT INTO `orders_list` 
 	    (`userid`, `token`, `transid`, `fileid`, `server_id`, `inbound_id`, `remark`, `uuid`, `protocol`, `expire_date`, `link`, `amount`, `status`, `date`, `notif`, `rahgozar`, `agent_bought`)
 	    VALUES (?, ?, '', ?, ?, ?, ?, ?, ?, ?, ?, ?,1, ?, 0, ?, ?);");
@@ -3510,13 +3518,6 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     $stmt->bind_param("i", $uid);
     $stmt->execute();
     $user_detail= $stmt->get_result()->fetch_assoc();
-    $stmt->close();
-
-
-    $stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
-    $stmt->bind_param("i", $uid);
-    $stmt->execute();
-    $orderHistory = $stmt->get_result()->num_rows;
     $stmt->close();
 
     if($user_detail['refered_by'] != null && $orderHistory <= 1){
@@ -3700,6 +3701,13 @@ if(preg_match('/payWithWallet(.*)/',$data, $match)){
         alert($mainValues['sending_config_to_user']);
         define('IMAGE_WIDTH',540);
         define('IMAGE_HEIGHT',540);
+
+		$stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
+        $stmt->bind_param("i", $uid);
+        $stmt->execute();
+        $orderHistory = $stmt->get_result()->num_rows;
+        $stmt->close();
+
         for($i = 1; $i <= $accountCount; $i++){
             $uniqid = generateRandomString(42,$protocol); 
         
@@ -3828,11 +3836,6 @@ if($botState['subLinkState'] == "on") $acc_text .= "
         }
     
         delMessage($msg);
-        $stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
-        $stmt->bind_param("i", $uid);
-        $stmt->execute();
-        $orderHistory = $stmt->get_result()->num_rows;
-        $stmt->close();
 
         if($userInfo['refered_by'] != null && $orderHistory <= 1){
             $stmt = $connection->prepare("SELECT * FROM `setting` WHERE `type` = 'INVITE_BANNER_AMOUNT'");
@@ -4238,6 +4241,13 @@ if(preg_match('/accept(.*)/',$data, $match) and $text != $buttonValues['cancel']
         include 'phpqrcode/qrlib.php';
         define('IMAGE_WIDTH',540);
         define('IMAGE_HEIGHT',540);
+
+		$stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
+        $stmt->bind_param("i", $uid);
+        $stmt->execute();
+        $orderHistory = $stmt->get_result()->num_rows;
+        $stmt->close();
+		
         for($i = 1; $i <= $accountCount; $i++){
             $uniqid = generateRandomString(42,$protocol); 
         
@@ -4392,12 +4402,6 @@ if($botState['subLinkState'] == "on") $acc_text .= "
         $stmt->bind_param("i", $uid);
         $stmt->execute();
         $user_detail= $stmt->get_result()->fetch_assoc();
-        $stmt->close();
-    
-        $stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1");
-        $stmt->bind_param("i", $uid);
-        $stmt->execute();
-        $orderHistory = $stmt->get_result()->num_rows;
         $stmt->close();
 
         if($userInfo['refered_by'] != null && $orderHistory <= 1){
