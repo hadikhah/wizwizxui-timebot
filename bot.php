@@ -3724,8 +3724,12 @@ if(preg_match('/payWithWallet(.*)/',$data, $match)){
         $stmt->bind_param("i", $uid);
         $stmt->execute();
         $orderHistory = $stmt->get_result()->num_rows;
-    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
-";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
+
+    $logFile = __DIR__ . "logs/referral_logs.txt"; 
+    $currentLine = __LINE__;
+     $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Successful Service Pays Found: $orderHistory\n";
+     file_put_contents($logFile, $logMsg, FILE_APPEND);
+
 		
         $stmt->close();
 
@@ -4167,8 +4171,12 @@ if(preg_match('/accept(.*)/',$data, $match) and $text != $buttonValues['cancel']
     $stmt->bind_param("i", $uid);
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
-    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
-";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
+
+    $logFile = __DIR__ . "logs/referral_logs.txt"; 
+    $currentLine = __LINE__;
+     $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Successful Service Pays Found: $orderHistory\n";
+     file_put_contents($logFile, $logMsg, FILE_APPEND);
+
 		
     $stmt->close();
 
