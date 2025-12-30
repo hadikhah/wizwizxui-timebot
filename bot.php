@@ -3313,6 +3313,11 @@ if(preg_match('/accCustom(.*)/',$data, $match) and $text != $buttonValues['cance
     $payInfo = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
+	$fid = $payInfo['plan_id'];
+    $volume = $payInfo['volume'];
+    $days = $payInfo['day'];
+    $uid = $payInfo['user_id'];
+
 	$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') AND `type` != 'INCREASE_WALLET'");
     $stmt->bind_param("i", $uid);
     $stmt->execute();
@@ -3328,11 +3333,6 @@ if(preg_match('/accCustom(.*)/',$data, $match) and $text != $buttonValues['cance
     $stmt->bind_param("s", $match[1]);
     $stmt->execute();
     $stmt->close();
-    
-    $fid = $payInfo['plan_id'];
-    $volume = $payInfo['volume'];
-    $days = $payInfo['day'];
-    $uid = $payInfo['user_id'];
 
     $acctxt = '';
     
@@ -4149,15 +4149,24 @@ if(preg_match('/accept(.*)/',$data, $match) and $text != $buttonValues['cancel']
     
     if($payInfo['state'] == "approved") exit();
 
-    $stmt = $connection->prepare("UPDATE `pays` SET `state` = 'approved' WHERE `hash_id` = ?");
-    $stmt->bind_param("s", $match[1]);
-    $stmt->execute();
-    $stmt->close();
-
     $uid = $payInfo['user_id'];
     $fid = $payInfo['plan_id'];
     $acctxt = '';
-    
+
+
+	$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') AND `type` != 'INCREASE_WALLET'");
+    $stmt->bind_param("i", $uid);
+    $stmt->execute();
+    $orderHistory = $stmt->get_result()->num_rows;
+    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
+";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
+		
+    $stmt->close();
+
+    $stmt = $connection->prepare("UPDATE `pays` SET `state` = 'approved' WHERE `hash_id` = ?");
+    $stmt->bind_param("s", $match[1]);
+    $stmt->execute();
+    $stmt->close();    
     
     $stmt = $connection->prepare("SELECT * FROM `server_plans` WHERE `id`=?");
     $stmt->bind_param("i", $fid);
@@ -4254,15 +4263,6 @@ if(preg_match('/accept(.*)/',$data, $match) and $text != $buttonValues['cancel']
         define('IMAGE_WIDTH',540);
         define('IMAGE_HEIGHT',540);
 
-		$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') AND `type` != 'INCREASE_WALLET'");
-        $stmt->bind_param("i", $uid);
-        $stmt->execute();
-        $orderHistory = $stmt->get_result()->num_rows;
-    $logMsg = date("Y-m-d H:i:s") . " - UID: $uid - Successful Pays Found: $orderHistory
-";     file_put_contents("logs/referral_logs.txt", $logMsg, FILE_APPEND);
-		
-        $stmt->close();
-		
         for($i = 1; $i <= $accountCount; $i++){
             $uniqid = generateRandomString(42,$protocol); 
         
