@@ -8456,7 +8456,7 @@ if(preg_match('/switchServer(.+)_(.+)/',$data,$match)){
     $server_title = $stmt->get_result()->fetch_assoc()['title'];
     $stmt->close();
     
-    $stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') ORDER BY `id` DESC");
+    $stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `userid` = ? AND `status` = 1 ORDER BY `id` DESC");
     $stmt->bind_param("i", $from_id);
     $stmt->execute();
     $orders = $stmt->get_result();
