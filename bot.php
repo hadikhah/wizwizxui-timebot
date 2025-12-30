@@ -1701,6 +1701,7 @@ if(preg_match('/havePaiedWeSwap(.*)/',$data,$match)) {
     $stmt->bind_param("i", $uid);
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
+	sendMessage($orderHistory , null , null , $admin);
     $stmt->close();
 		
     for($i = 1; $i <= $accountCount; $i++){
@@ -3078,6 +3079,7 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     $stmt->bind_param("i", $uid);
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
+	sendMessage($orderHistory , null , null , $admin);
     $stmt->close();
 
     if($user_detail['refered_by'] != null && $orderHistory <= 1){
@@ -3494,6 +3496,7 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     $stmt->bind_param("i", $uid);
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
+	sendMessage($orderHistory , null , null , $admin);
     $stmt->close();
 	
 	$stmt = $connection->prepare("INSERT INTO `orders_list` 
@@ -3706,6 +3709,7 @@ if(preg_match('/payWithWallet(.*)/',$data, $match)){
         $stmt->bind_param("i", $uid);
         $stmt->execute();
         $orderHistory = $stmt->get_result()->num_rows;
+		sendMessage($orderHistory , null , null , $admin);
         $stmt->close();
 
         for($i = 1; $i <= $accountCount; $i++){
@@ -4246,6 +4250,7 @@ if(preg_match('/accept(.*)/',$data, $match) and $text != $buttonValues['cancel']
         $stmt->bind_param("i", $uid);
         $stmt->execute();
         $orderHistory = $stmt->get_result()->num_rows;
+		sendMessage($orderHistory , null , null , $admin);
         $stmt->close();
 		
         for($i = 1; $i <= $accountCount; $i++){
