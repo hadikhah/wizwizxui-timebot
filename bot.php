@@ -1702,7 +1702,7 @@ if(preg_match('/havePaiedWeSwap(.*)/',$data,$match)) {
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
 
-    $logFile = __DIR__ . "logs/referral_logs.txt";
+    $logFile = "logs/referral_logs.txt";
      $currentLine = __LINE__;
      $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Successful Service Pays Found: $orderHistory\n\n";
      file_put_contents($logFile, $logMsg, FILE_APPEND);
@@ -3085,7 +3085,7 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
 
-    $logFile = __DIR__ . "logs/referral_logs.txt";
+    $logFile = "logs/referral_logs.txt";
      $currentLine = __LINE__;
      $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Successful Service Pays Found: $orderHistory\n";
      file_put_contents($logFile, $logMsg, FILE_APPEND);
@@ -3329,7 +3329,7 @@ if(preg_match('/accCustom(.*)/',$data, $match) and $text != $buttonValues['cance
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
 
-    $logFile = __DIR__ . "logs/referral_logs.txt";
+    $logFile = "logs/referral_logs.txt";
      $currentLine = __LINE__;
      $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Successful Service Pays Found: $orderHistory\n\n";
      file_put_contents($logFile, $logMsg, FILE_APPEND);
@@ -3725,7 +3725,7 @@ if(preg_match('/payWithWallet(.*)/',$data, $match)){
         $stmt->execute();
         $orderHistory = $stmt->get_result()->num_rows;
 
-    $logFile = __DIR__ . "logs/referral_logs.txt"; 
+    $logFile = "logs/referral_logs.txt"; 
     $currentLine = __LINE__;
      $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Successful Service Pays Found: $orderHistory\n";
      file_put_contents($logFile, $logMsg, FILE_APPEND);
@@ -4172,7 +4172,7 @@ if(preg_match('/accept(.*)/',$data, $match) and $text != $buttonValues['cancel']
     $stmt->execute();
     $orderHistory = $stmt->get_result()->num_rows;
 
-    $logFile = __DIR__ . "logs/referral_logs.txt"; 
+    $logFile = "logs/referral_logs.txt"; 
     $currentLine = __LINE__;
      $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Successful Service Pays Found: $orderHistory\n";
      file_put_contents($logFile, $logMsg, FILE_APPEND);
