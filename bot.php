@@ -4428,13 +4428,19 @@ if($botState['subLinkState'] == "on") $acc_text .= "
 
     editKeys($keys);
 
+	$stmt = $connection->prepare("SELECT * FROM `users` WHERE `userid`=?");
+    $stmt->bind_param("i", $uid);
+    $stmt->execute();
+    $user_detail= $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
 	$logFile = "logs/referral_logs.txt"; 
     $currentLine = __LINE__;
     $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Pay info type: {$payInfo['type']}\n";
     file_put_contents($logFile, $logMsg, FILE_APPEND);
 
     $currentLine = __LINE__;
-	$encoded_json_use_info = json_encode([$userInfo]);
+	$encoded_json_use_info = json_encode(["userInfo"=>$userInfo,"user_detail"=>$user_detail]);
     $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Pay info type: {$userInfo['refered_by']} , history: $orderHistory , admin approval user info : {$encoded_json_use_info} \n";
     file_put_contents($logFile, $logMsg, FILE_APPEND);
 
@@ -4442,13 +4448,8 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     if($payInfo['type'] != "RENEW_SCONFIG"){
         $filename = $file_detail['title'];
         $fileprice = number_format($file_detail['price']);
-        $stmt = $connection->prepare("SELECT * FROM `users` WHERE `userid`=?");
-        $stmt->bind_param("i", $uid);
-        $stmt->execute();
-        $user_detail= $stmt->get_result()->fetch_assoc();
-        $stmt->close();
 
-        if($userInfo['refered_by'] != null && $orderHistory <= 1){
+        if($user_detail['refered_by'] != null && $orderHistory <= 1){
             $stmt = $connection->prepare("SELECT * FROM `setting` WHERE `type` = 'INVITE_BANNER_AMOUNT'");
             $stmt->execute();
             $inviteAmount = $stmt->get_result()->fetch_assoc()['value']??0;
