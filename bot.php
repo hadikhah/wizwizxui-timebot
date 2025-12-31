@@ -4434,7 +4434,8 @@ if($botState['subLinkState'] == "on") $acc_text .= "
     file_put_contents($logFile, $logMsg, FILE_APPEND);
 
     $currentLine = __LINE__;
-    $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Pay info type: {$userInfo['refered_by']} , history: $orderHistory , admin approval user info : {json_encode([$userInfo])} \n";
+	$encoded_json_use_info = json_encode([$userInfo]);
+    $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Pay info type: {$userInfo['refered_by']} , history: $orderHistory , admin approval user info : {$encoded_json_use_info} \n";
     file_put_contents($logFile, $logMsg, FILE_APPEND);
 
 	
