@@ -4165,21 +4165,7 @@ if(preg_match('/accept(.*)/',$data, $match) and $text != $buttonValues['cancel']
     $uid = $payInfo['user_id'];
     $fid = $payInfo['plan_id'];
     $acctxt = '';
-
-
-	$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') AND `type` != 'INCREASE_WALLET'");
-    $stmt->bind_param("i", $uid);
-    $stmt->execute();
-    $orderHistory = $stmt->get_result()->num_rows;
-
-    $logFile = "logs/referral_logs.txt"; 
-    $currentLine = __LINE__;
-     $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Successful Service Pays Found: $orderHistory\n";
-     file_put_contents($logFile, $logMsg, FILE_APPEND);
-
 		
-    $stmt->close();
-
     $stmt = $connection->prepare("UPDATE `pays` SET `state` = 'approved' WHERE `hash_id` = ?");
     $stmt->bind_param("s", $match[1]);
     $stmt->execute();
@@ -4428,6 +4414,12 @@ if($botState['subLinkState'] == "on") $acc_text .= "
 
     editKeys($keys);
 
+	$stmt = $connection->prepare("SELECT * FROM `pays` WHERE `user_id` = ? AND (`state` = 'approved' OR `state` = 'paid_with_wallet') AND `type` != 'INCREASE_WALLET'");
+    $stmt->bind_param("i", $uid);
+    $stmt->execute();
+    $orderHistory = $stmt->get_result()->num_rows;
+    $stmt->close();
+
 	$stmt = $connection->prepare("SELECT * FROM `users` WHERE `userid`=?");
     $stmt->bind_param("i", $uid);
     $stmt->execute();
@@ -4436,13 +4428,18 @@ if($botState['subLinkState'] == "on") $acc_text .= "
 
 	$logFile = "logs/referral_logs.txt"; 
     $currentLine = __LINE__;
-    $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Pay info type: {$payInfo['type']}\n";
+    $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Successful Service Pays Found: $orderHistory\n";
     file_put_contents($logFile, $logMsg, FILE_APPEND);
 
-    $currentLine = __LINE__;
-	$encoded_json_use_info = json_encode(["userInfo"=>$userInfo,"user_detail"=>$user_detail]);
-    $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Pay info type: {$userInfo['refered_by']} , history: $orderHistory , admin approval user info : {$encoded_json_use_info} \n";
-    file_put_contents($logFile, $logMsg, FILE_APPEND);
+	// $logFile = "logs/referral_logs.txt"; 
+ //    $currentLine = __LINE__;
+ //    $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Pay info type: {$payInfo['type']}\n";
+ //    file_put_contents($logFile, $logMsg, FILE_APPEND);
+
+ //    $currentLine = __LINE__;
+	// $encoded_json_use_info = json_encode(["userInfo"=>$userInfo,"user_detail"=>$user_detail]);
+ //    $logMsg = date("Y-m-d H:i:s") . " - [Auto Line: $currentLine] - UID: $uid - Pay info type: {$userInfo['refered_by']} , history: $orderHistory , admin approval user info : {$encoded_json_use_info} \n";
+ //    file_put_contents($logFile, $logMsg, FILE_APPEND);
 
 	
     if($payInfo['type'] != "RENEW_SCONFIG"){
